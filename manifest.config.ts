@@ -80,10 +80,10 @@ export default defineManifestConfig({
       /* 图标配置 */
       icons: {
         android: {
-          hdpi: 'static/app/icons/72x72.png',
-          xhdpi: 'static/app/icons/96x96.png',
-          xxhdpi: 'static/app/icons/144x144.png',
-          xxxhdpi: 'static/app/icons/192x192.png',
+          hdpi: 'src/static/app/icons/72x72.png',
+          xhdpi: 'src/static/app/icons/96x96.png',
+          xxhdpi: 'src/static/app/icons/144x144.png',
+          xxxhdpi: 'src/static/app/icons/192x192.png',
         },
         ios: {
           appstore: 'static/app/icons/1024x1024.png',
@@ -111,34 +111,18 @@ export default defineManifestConfig({
         },
       },
     },
-    nativePlugins__UNI__D82A5CB: {
-      TestModule: {
-        __plugin_info__: {
-          name: 'TestModule',
-          description: '测试插件',
-          platforms: 'Android',
-          url: '',
-          android_package_name: '',
-          ios_bundle_id: '',
-          isCloud: false,
-          bought: -1,
-          pid: '',
-          parameters: {},
-        },
-      },
-    },
     nativePlugins: {
-      TestModule: {
+      'Pdf-Plugin': {
         __plugin_info__: {
-          name: 'TestModule',
-          description: '测试插件',
+          name: 'Pdf-Plugin',
+          description: '此插件为uni小程序Android原生插件,用于加载网络pdf,支持水印和缩放',
           platforms: 'Android',
-          url: '',
-          android_package_name: '',
+          url: 'https://ext.dcloud.net.cn/plugin?id=11384',
+          android_package_name: 'uni.app.UNID82A5CB',
           ios_bundle_id: '',
-          isCloud: false,
-          bought: -1,
-          pid: '',
+          isCloud: true,
+          bought: 1,
+          pid: '11384',
           parameters: {},
         },
       },

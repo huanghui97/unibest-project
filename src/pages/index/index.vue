@@ -12,13 +12,13 @@
 <template>
   <view class="bg-white overflow-hidden bg-#ff00ff flex flex-col h-full" @click="closeOutside">
     <view class="w-full">
-      <TextCollapse
+      <!-- <TextCollapse
         :text="'一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字一串很长的文字这是文字的结尾'"
         :n="3"
-      />
+      /> -->
     </view>
     <!-- <choice-area/> -->
-    <!-- <view class="flex-1 bg-#ff0000" @click="goPdf"></view> -->
+    <view class="flex-1 bg-#ff0000" @click="goPdf"></view>
     <tabbar page="index" />
   </view>
 </template>
@@ -58,7 +58,7 @@ const description = ref(
 )
 const goPdf = () => {
   uni.navigateTo({
-    url: '/pages/pdf/index?pdfUrl=http://192.168.31.204:3000/2023.pdf',
+    url: '/pages/pdf/nIndex?pdfUrl=http://192.168.31.204:3000/2023.pdf',
   })
 }
 // 测试 uni API 自动引入

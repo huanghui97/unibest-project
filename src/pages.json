@@ -92,6 +92,14 @@
       }
     },
     {
+      "path": "pages/pdf/nIndex",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "首页"
+      }
+    },
+    {
       "path": "pages/mine/about/index",
       "type": "page",
       "style": {
