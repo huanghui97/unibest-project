@@ -2,9 +2,9 @@
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only'
 import { usePageAuth } from '@/hooks/usePageAuth'
-
+var testModule = uni.requireNativePlugin('TestModule')
 usePageAuth()
-
+console.log(testModule)
 onLaunch(() => {
   console.log('App Launch')
 })

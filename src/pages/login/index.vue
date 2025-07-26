@@ -7,11 +7,12 @@
 }
 </route>
 <template>
-  <view class="login-container">
+  <view class="bg-white overflow-hidden container flex flex-col h-full bg">
     <!-- 背景装饰元素 -->
-    <view class="bg-decoration bg-circle-1"></view>
+    <view>
+      <!-- <view class="bg-decoration bg-circle-1"></view>
     <view class="bg-decoration bg-circle-2"></view>
-    <view class="bg-decoration bg-circle-3"></view>
+    <view class="bg-decoration bg-circle-3"></view> -->
 
     <view class="login-header">
       <image class="login-logo" :src="appLogo" mode="aspectFit"></image>
@@ -119,7 +120,8 @@
         </view>
       </wd-checkbox>
     </view>
-    <view class="login-footer"></view>
+    <!-- <view class="login-footer"></view> -->
+    </view>
   </view>
 </template>
 
@@ -241,6 +243,9 @@ const handleAgreement = (type: 'user' | 'privacy') => {
 </script>
 
 <style lang="scss" scoped>
+.bg{
+  background-color: #d14328;
+}
 /* 验证码输入框样式 */
 .captcha-wrapper {
   .captcha-input {
@@ -284,7 +289,7 @@ const handleAgreement = (type: 'user' | 'privacy') => {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  //min-height: 100vh;
   padding: 0 70rpx;
   background-color: #ffffff;
   background-image: linear-gradient(

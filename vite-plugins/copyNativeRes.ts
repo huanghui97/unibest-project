@@ -2,13 +2,13 @@ import fs from 'fs-extra'
 import path from 'path'
 
 export function copyNativeRes() {
-  const waitPath = path.resolve(__dirname, '../src/nativeResources')
+  const waitPath = path.resolve(__dirname, '../src/nativeplugins')
   const buildPath = path.resolve(
     __dirname,
     '../dist',
     process.env.NODE_ENV === 'production' ? 'build' : 'dev',
     process.env.UNI_PLATFORM!,
-    'nativeResources',
+    'nativeplugins',
   )
 
   return {

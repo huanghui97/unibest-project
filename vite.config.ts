@@ -20,6 +20,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
 import ViteRestart from 'vite-plugin-restart'
 import { copyNativeRes } from './vite-plugins/copyNativeRes'
+import { copyHybrid } from './vite-plugins/copyHybrid'
 import Components from '@uni-helper/vite-plugin-uni-components'
 
 // https://vitejs.dev/config/
@@ -129,6 +130,8 @@ export default async ({ command, mode }) => {
         dts: 'src/types/components.d.ts', // 自动生成的组件类型声明文件路径（用于 TypeScript 支持）
       }),
       Uni(),
+      copyNativeRes(),
+      copyHybrid(),
     ],
     define: {
       __UNI_PLATFORM__: JSON.stringify(UNI_PLATFORM),

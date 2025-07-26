@@ -1,0 +1,19 @@
+{
+  "name": "TestModule",
+  "id": "TestModule",
+  "version": "1.0.0",
+  "description": "测试插件",
+  "_dp_type": "nativeplugin",
+  "_dp_nativeplugin": {
+    "android": {
+      "plugins": [
+        {
+          "type": "module",
+          "name": "TestModule",
+          "class": "TestModule"
+        }
+      ],
+      "integrateType": "aar"
+    }
+  }
+}

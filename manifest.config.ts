@@ -26,6 +26,12 @@ export default defineManifestConfig({
       base: VITE_APP_PUBLIC_BASE,
     },
   },
+  permissions: {
+    UniNView: {
+      description: 'UniNView原生渲染',
+    },
+    LivePusher: {},
+  },
   /* 5+App特有相关 */
   'app-plus': {
     usingComponents: true,
@@ -102,6 +108,38 @@ export default defineManifestConfig({
             'spotlight@2x': 'static/app/icons/80x80.png',
             'spotlight@3x': 'static/app/icons/120x120.png',
           },
+        },
+      },
+    },
+    nativePlugins__UNI__D82A5CB: {
+      TestModule: {
+        __plugin_info__: {
+          name: 'TestModule',
+          description: '测试插件',
+          platforms: 'Android',
+          url: '',
+          android_package_name: '',
+          ios_bundle_id: '',
+          isCloud: false,
+          bought: -1,
+          pid: '',
+          parameters: {},
+        },
+      },
+    },
+    nativePlugins: {
+      TestModule: {
+        __plugin_info__: {
+          name: 'TestModule',
+          description: '测试插件',
+          platforms: 'Android',
+          url: '',
+          android_package_name: '',
+          ios_bundle_id: '',
+          isCloud: false,
+          bought: -1,
+          pid: '',
+          parameters: {},
         },
       },
     },
