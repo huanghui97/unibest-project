@@ -18,7 +18,9 @@
       /> -->
     </view>
     <!-- <choice-area/> -->
-    <view class="flex-1 bg-#ff0000" @click="goPdf"></view>
+    <view class="flex-1 bg-#ff0000" @click="goPdf">
+      <wd-icon name="add-circle" />
+    </view>
     <tabbar page="index" />
   </view>
 </template>
