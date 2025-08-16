@@ -1,5 +1,5 @@
 <!-- 使用 type="home" 属性设置首页，其他页面不需要设置，默认为page；推荐使用json5，更强大，且允许注释 -->
-<route lang="json5" type="home">
+<route lang="json5" type="page">
 {
   style: {
     navigationStyle: 'custom',
@@ -18,8 +18,17 @@
       /> -->
     </view>
     <!-- <choice-area/> -->
-    <view class="flex-1 bg-#ff0000" @click="goPdf">
+    <view class="" @click="goPdf">
       <wd-icon name="add-circle" />
+    </view>
+    <view>
+      <scroll-view class="flex-1" scroll-y>
+        <view class="flex-1" v-for="item in 10" :key="item">
+          <view class="h-100px w-100px">
+            <wd-button type="primary" size="large" @click="showMessage">{{ item }}</wd-button>
+          </view>
+        </view>
+      </scroll-view>
     </view>
     <tabbar page="index" />
   </view>
@@ -30,6 +39,21 @@ import TextCollapse from '@/components/common/TextCollapse.vue'
 import PLATFORM from '@/utils/platform'
 import { useQueue } from 'wot-design-uni'
 const { closeOutside } = useQueue()
+import { useMessage } from 'wot-design-uni'
+const message = useMessage()
+function showMessage() {
+  message
+    .confirm({
+      msg: '提示文案',
+      title: '标题',
+    })
+    .then(() => {
+      console.log('点击了确定按钮')
+    })
+    .catch(() => {
+      console.log('点击了取消按钮')
+    })
+}
 defineOptions({
   name: 'Home',
 })

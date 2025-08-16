@@ -27,14 +27,12 @@
   },
   "pages": [
     {
-      "path": "pages/index/index",
+      "path": "pages/faceLogin/index",
       "type": "home",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "首页"
-      },
-      "needLogin": true,
-      "needTabbar": false
+      }
     },
     {
       "path": "pages/about/about",
@@ -45,12 +43,14 @@
       }
     },
     {
-      "path": "pages/faceLogin/index",
+      "path": "pages/index/index",
       "type": "page",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "首页"
-      }
+      },
+      "needLogin": true,
+      "needTabbar": false
     },
     {
       "path": "pages/login/index",

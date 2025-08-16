@@ -1,5 +1,5 @@
 <!-- 使用 type="home" 属性设置首页，其他页面不需要设置，默认为page；推荐使用json5，更强大，且允许注释 -->
-<route lang="json5">
+<route lang="json5" type="home">
 {
   style: {
     navigationStyle: 'custom',
@@ -15,18 +15,32 @@
     }"
   >
     <view class="content-box h-700rpx flex-shrink-0 w-700rpx mx-auto"></view>
-    <img :src="state.imgData" alt="" class="w-700rpx h-700rpx mx-auto block flex-shrink-0" />
+    <img :src="state.imgData" alt="" class="w-300rpx h-400rpx mx-auto block flex-shrink-0" />
 
     <wd-button class="but flex-shrink-0" @click="snapshotPusher" v-if="!state.cilckSwitch">
       采集本人人脸
     </wd-button>
+
+    <canvas
+      canvas-id="myCanvas"
+      style="
+        width: 400px;
+        height: 300px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 1;
+        pointer-events: none;
+      "
+    ></canvas>
   </view>
 </template>
 
 <script lang="ts" setup>
 import permission from '@/utils/permission'
-import { reactive } from 'vue'
+import { reactive, getCurrentInstance } from 'vue'
 
+const { proxy } = getCurrentInstance()
 const { safeAreaInsets } = uni.getSystemInfoSync()
 const state = reactive({
   type: '', //是否是补签拉起的人脸识别
@@ -46,7 +60,7 @@ function faceInit() {
       const data1 = await permission.requestAndroidPermission('android.permission.RECORD_AUDIO')
       const data2 = await permission.requestAndroidPermission('android.permission.CAMERA')
       console.log(data1, data2, 1111)
-      if (data1 == 1 && data2 == 1) {
+      if (data2 == 1) {
         pusherInit()
       }
     } else {
@@ -86,9 +100,9 @@ function pusherInit() {
     top: safeAreaInsets.top + 'px',
     left: uni.upx2px(225) + 'px',
     width: uni.upx2px(300) + 'px',
-    height: uni.upx2px(300) + 'px',
+    height: uni.upx2px(400) + 'px',
     position: 'absolute',
-    aspect: '1:1',
+    aspect: '4:3',
     muted: true,
     mode: 'HD',
   })
@@ -161,11 +175,14 @@ function getMinImage(imgPath) {
     (zipRes) => {
       setTimeout(() => {
         var reader = new plus.io.FileReader()
-        reader.onloadend = (res) => {
+        reader.onloadend = async (res) => {
           console.log(res)
           var speech = (res.target as any).result //base64图片
-          console.log(speech.length)
-          state.imgData = speech
+
+          const base64 = await rotateImage(speech, 'myCanvas')
+          console.log('>>>', base64)
+          state.imgData = base64 as string
+          // console.log(speech.length)
         }
         reader.readAsDataURL(plus.io.convertLocalFileSystemURL(zipRes.target) as any)
       }, 1000)
@@ -174,6 +191,29 @@ function getMinImage(imgPath) {
       console.log('Compress error!', error)
     },
   )
+}
+
+function rotateImage(base64Img, canvasId) {
+  return new Promise(async (resolve, reject) => {
+    const ctx = uni.createCanvasContext(canvasId, proxy)
+    // ctx.drawImage(base64Img, 0, 0, 300, 400)
+    ctx.translate(0, 300)
+    ctx.rotate(-Math.PI / 2)
+    ctx.drawImage(base64Img, 0, 0, 300, 400)
+    ctx.draw(false, async () => {
+      const res = (await uni.canvasToTempFilePath({ canvasId: canvasId }, proxy)) as any
+
+      const path = plus.io.convertLocalFileSystemURL(res.tempFilePath)
+      console.log('>>>', path)
+      const fileReader = new plus.io.FileReader()
+      fileReader.readAsDataURL(path as any)
+      fileReader.onloadend = (res) => {
+        console.log('>>>', res)
+        const base64 = (res.target as any).result
+        resolve(base64)
+      }
+    })
+  })
 }
 
 onLoad(() => {
