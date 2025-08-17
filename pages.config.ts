@@ -1,6 +1,19 @@
 import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
 
 export default defineUniPages({
+  pages: [
+    {
+      path: 'pages/faceLogin/camera',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '相机',
+        navigationStyle: 'custom',
+      },
+      'app-plus': {
+        renderer: 'native', //App端纯原生渲染模式
+      },
+    },
+  ],
   globalStyle: {
     navigationStyle: 'default',
     navigationBarTitleText: 'unibest',

@@ -1,0 +1,219 @@
+<template>
+	<view class="live-camera" >
+		<view class="prompt">请面向屏幕</view>
+		<live-pusher
+			id="livePusher"
+			ref="livePusher"
+			class="livePusher"
+			mode="FHD"
+			beauty="0"
+			whiteness="0"
+			:aspect="aspect"
+			min-bitrate="1000"
+			audio-quality="16KHz"
+			device-position="back"
+			:auto-focus="true"
+			:muted="true"
+			:enable-camera="true"
+			:enable-mic="false"
+			:zoom="false"
+			@statechange="statechange"
+			:style="{ width: pushWidth, height: pushHeight }"
+		></live-pusher>
+		<view class="menu">
+			<cover-image class="face-line" src="/static/images/20250816-211712.png"></cover-image>
+			<cover-image class="face-loading" src="/static/images/loading.gif" v-if="loading"></cover-image>
+		</view>
+		
+	</view>
+</template>
+
+<script>
+let _this = null;
+export default {
+	name:"camera",
+	data() {
+		return {
+			poenCarmeInterval:null,//打开相机的轮询
+			aspect: '1:1', //比例
+			windowWidth: '', //屏幕可用宽度
+			windowHeight: '', //屏幕可用高度
+			camerastate: false, //相机准备好了
+			livePusher: null, //流视频对象
+			snapshotsrc: null, //快照
+			pushWidth:'',
+			pushHeight:'',
+			intervalTimer:'',
+			count:3,
+			loading:false
+		};
+	},
+	onLoad(e) {
+		_this = this;
+		this.initCamera();
+	},
+	onReady() {
+		this.livePusher = uni.createLivePusherContext('livePusher', this);
+		_this.flip()
+		this.startPreview(); //开启预览并设置摄像头
+		//this.poenCarme();
+		setTimeout(_this.snapshot,3000)
+
+	},
+	methods: {
+		
+		//轮询打开
+		poenCarme(){
+			//#ifdef APP-PLUS
+			if (plus.os.name == 'Android') {
+				this.poenCarmeInterval = setInterval(function() {
+					//console.log(_this.camerastate);
+					if (!_this.camerastate){
+						 _this.startPreview();
+					}
+				}, 2500);
+			}
+			//#endif
+		},
+		//初始化相机
+		initCamera() {
+			uni.getSystemInfo({
+				success: function(res) {
+					_this.windowWidth = res.windowWidth;
+					_this.windowHeight = res.windowHeight;
+					_this.pushWidth=uni.upx2px(600)
+					_this.pushHeight=uni.upx2px(600)
+					let zcs = _this.aliquot(_this.windowWidth,_this.windowHeight);
+					_this.aspect = (_this.windowWidth/zcs)+':'+(_this.windowHeight/zcs);
+					console.log('画面比例：'+_this.aspect);
+				}
+			});
+		},
+		
+		//整除数计算
+		aliquot(x, y) {
+			if (x % y == 0) return y;
+			return this.aliquot(y, x % y);
+		},
+
+		//开始预览
+		startPreview() {
+			this.livePusher.startPreview({
+				success: a => {
+					console.log(a)
+				}
+			});
+		},
+		
+		//停止预览
+		stopPreview() {
+			this.livePusher.stopPreview({
+				success: a => {
+					_this.camerastate = false; //标记相机未启动
+				}
+			});
+		},
+		
+		//状态
+		statechange(e) {
+			//状态改变
+			console.log(e);
+			if (e.detail.code == 1007) {
+				_this.camerastate = true;
+			} else if (e.detail.code == -1301) {
+				_this.camerastate = false;
+			}
+		},
+		
+
+		//返回
+		back() {
+			uni.navigateBack();
+		},
+		//抓拍
+		snapshot() {
+			console.log('snapshot')
+			_this.loading=true
+			//拍照
+			this.livePusher.snapshot({
+				success: e => {
+					_this.snapshotsrc = e.message.tempImagePath;
+					_this.stopPreview();
+					_this.setImage();
+					//_this.loading=false;
+					//uni.navigateBack();
+				}
+			});
+		},
+		//反转
+		flip() {
+			this.livePusher.switchCamera();
+		},
+		pathToBase64(imagePath) {
+			return new Promise((resolve, reject) => {
+				// 通过 plus.io 将本地路径转换为可读取的路径（处理 Android 路径格式）
+				plus.io.resolveLocalFileSystemURL(imagePath, entry => {
+					entry.file(file => {
+						const fileReader = new plus.io.FileReader();
+						// 以二进制方式读取文件
+						fileReader.readAsDataURL(file);
+						fileReader.onloadend = function(e) {
+							// 结果为 "data:image/jpeg;base64,xxxx..."，截取 Base64 部分
+							const base64Str = e.target.result.split(',')[1];
+							resolve(base64Str);
+						};
+						fileReader.onerror = () => reject(new Error("读取文件失败"));
+					}, err => reject(err));
+				}, err => reject(err));
+			});
+		},
+		//设置
+		setImage() {			
+			_this.pathToBase64(_this.snapshotsrc).then((base64)=>{
+					uni.$emit('update',{msg:base64})
+			})
+
+		}
+	}
+};
+</script>
+
+<style lang="scss">
+.live-camera {
+	margin-top:245rpx;
+	align-items: center;
+	background-color:#ffffff;
+	.prompt{
+		margin-bottom:15rpx;
+	}
+	.menu {
+		position: absolute;
+		left: 75rpx;
+		bottom:0rpx;
+		width: 600rpx;
+		height: 600rpx;
+		z-index: 98;
+		align-items: center;
+		justify-content: center;
+		//background-color:red;
+		.face-line {
+			position: absolute;
+			left: 0;
+			top:0rpx;
+			width: 600rpx;
+			height: 600rpx;
+			z-index: 98;
+		}
+		.face-loading{
+			//background-color: aqua;
+			position: absolute;
+			left:220rpx;
+			top:220rpx;
+			width: 160rpx;
+			height: 160rpx;
+			z-index: 99;
+			
+		}
+	}
+}
+</style>

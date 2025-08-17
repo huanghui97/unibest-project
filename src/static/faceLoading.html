@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <style>
+      .loading {
+        width: 100px;
+        height: 100px;
+        border: 2px solid #000;
+        border-top-color: transparent;
+        border-radius: 100%;
+
+        animation: circle infinite 0.75s linear;
+      }
+
+      // 转转转动画
+      @keyframes circle {
+        0% {
+          transform: rotate(0);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      作者：德育处主任
+      链接：https://juejin.cn/post/7037036742985121800
+      来源：稀土掘金
+      著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+    </style>
+  </head>
+  <body>
+    <div class="loading"></div>
+  </body>
+</html>

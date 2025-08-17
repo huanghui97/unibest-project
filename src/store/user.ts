@@ -93,6 +93,13 @@ export const useUserStore = defineStore(
       getUserInfo()
       return res
     }
+    const codeLogin = async () => {
+      console.log(codeLogin)
+      return {
+        success: false,
+        data: 111111,
+      }
+    }
 
     return {
       userInfo,
@@ -101,6 +108,7 @@ export const useUserStore = defineStore(
       getUserInfo,
       setUserAvatar,
       logout,
+      codeLogin,
     }
   },
   {
